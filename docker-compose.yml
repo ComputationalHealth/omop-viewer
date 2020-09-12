@@ -1,0 +1,29 @@
+version: "3.5"
+
+services: 
+    db:
+        image: postgres
+        environment:
+            - POSTGRES_DB=omop
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        build:
+                context: .
+                dockerfile: ./db/Dockerfile.db
+        command: postgres -c max_wal_size=2GB -c work_mem=50MB -c autovacuum=off     
+        ports:
+            - "5597:5432"
+
+    #app:
+    #    build:
+    #        context: .
+    #    network_mode: bridge
+    #    ports:
+    #        - "5599:8000"
+    #    volumes:
+    #        - ./app:/app
+    #    command: >
+    #        sh -c "python manage.py runserver 0.0.0.0:8000"
+
+
+    

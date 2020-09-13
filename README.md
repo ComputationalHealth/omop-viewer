@@ -2,6 +2,7 @@
 
 The viewer is designed to provide an open-sourced and scalable visualization tool to view patient chart and analytics data over ODSHI OMOP Common Data Model (CDM). To make it easy to replicate and launch, we have wrapped the work into an automated pipeline. 
 
+## Installation
 Simply follow the steps below:
 
 1. Clone this git;
@@ -31,3 +32,8 @@ This will start the Django app container
 5. To shut down the services, run
        docker-compose down
 
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

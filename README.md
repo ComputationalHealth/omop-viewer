@@ -7,12 +7,27 @@ Simply follow the steps below:
 1. Clone this git;
 
 2. On the highest level of omop-viewer/ folder, run 
+```bash
       docker-compose build
+```
    It will re-assemble the postgres database dump file which contains synthetic patient data in omop common data model
 
 3. Then, run
-       docker-compose up
-       
-4. To shut down the services, run
+```bash
+       docker-compose up -d db
+```
+This will start the database docker container, then run
+
+```bash
+       docker-compose up -d app
+```
+This will start the Django app container
+
+4. Open a web browser, and go 
+```bash
+      http://localhost:5599/patViewer/
+```
+
+5. To shut down the services, run
        docker-compose down
 

@@ -1,0 +1,1 @@
+The omop cdm sql dump files will be downloaded from AWS S3 directly when creating the db docker container. 

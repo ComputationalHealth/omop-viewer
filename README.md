@@ -19,8 +19,9 @@ Simply follow the steps below:
 ```bash
        docker-compose up -d db
 ```
-This will start the database docker container, then run
+This will start the database docker container, it will take a while since the postgres database will load the dumped data during initialization. 
 
+When the db is initialized and running, run 
 ```bash
        docker-compose up -d app
 ```

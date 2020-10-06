@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'm)-2)m!g$gq$b(9)47hb$jf10pn_s9ws1r!*astcey7fua+m*!'
+SECRET_KEY = 'FAKESECRETKEY_CHANGEME'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['core-gpuws2.med.yale.internal', '0.0.0.0', 'localhost', '172.17.0.6', '127.0.0.1', '172.23.193.51']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -74,21 +74,27 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+DB_HOST = os.getenv("POSTGRES_HOST", "db")
+DB_PORT = os.getenv("POSTGRES_PORT", 5432)
+DB_NAME = os.getenv("POSTGRES_DB", "omop")
+DB_USERNAME = os.getenv("POSTGRES_USER", "postgres")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
+DB_SCHEMA = os.getenv("POSTGRES_SCHEMA", "cdm_synthea10")
 
 DATABASES = {
-    'old': {
+    'internal': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'omop',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': DB_NAME,
+        'USER': DB_USERNAME,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
         'OPTIONS': {
-            'options': '-c search_path=cdm_synthea10'
+            'options': '-c search_path=' + DB_SCHEMA
         }
     }
 }

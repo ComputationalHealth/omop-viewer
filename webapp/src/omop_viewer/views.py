@@ -7,37 +7,38 @@ from .models import ConditionOccurrence as ConditionOccurrenceModel
 from .models import Note as NoteModel
 from .models import Measurement as MeasurementModel
 
+
 # Create your views here.
 def patViewer(request):
     return render(request, 'index.html')
 
 
-def searchMRN(request):
-    mrn_num = request.POST.get('mrn_num')
-    patient = PersonModel.objects.get(person_id=mrn_num)
+def search(request):
+    person_id = request.POST.get('person_id')
+    patient = PersonModel.objects.get(person_id=person_id)
     
     measurements = {}
-    measurements = MeasurementModel.objects.filter(person_id=mrn_num)[:20]
+    measurements = MeasurementModel.objects.filter(person_id=person_id)[:20]
     meas = MeasurementModel.objects.first()
     measurment_fields = {}
     if meas is not None:
         measurement_fields = MeasurementModel.get_fields(meas)
 
-    all_encs = VisitOccurrenceModel.objects.filter(person_id=mrn_num)
+    all_encs = VisitOccurrenceModel.objects.filter(person_id=person_id)
 
     return render(request, 'index.html', {'patient': patient, 'all_encs': all_encs,
                                         'measurements': measurements, 'measurement_fields': measurment_fields
     })
 
-def pat_detail(request, mrn):
 
-    pat = None
+def patient(request, person_id):
+    patient = None
     return render(request, 'index.html')
-    
-def enc_detail(request, person_id, visit_occurrence_id ):
-    mrn_num = person_id
+
+
+def encounter(request, visit_occurrence_id):
     enc_id = visit_occurrence_id
-    enc_details = VisitOccurrenceModel.objects.get(visit_occurrence_id=enc_id)
+    encounter = VisitOccurrenceModel.objects.get(visit_occurrence_id=enc_id)
 
     # Observations
     observations = {}
@@ -64,9 +65,8 @@ def enc_detail(request, person_id, visit_occurrence_id ):
     if note is not None:
         note_fields = NoteModel.get_fields(note)
     
-    return render(request, 'encounter.html', {'enc_detail': enc_details, 
+    return render(request, 'encounter.html', {'encounter': encounter, 
                             'observations': observations, "observation_fields": observation_fields,
                             'conditions': conditions, "condition_fields": condition_fields,
                             'notes': notes, "note_fields": note_fields
                      })
-

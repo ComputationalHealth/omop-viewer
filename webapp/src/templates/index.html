@@ -31,13 +31,13 @@
         </div>
         <div class="row">
           <div class="col-md-4 col-md-offset-4">
-              <form class="input-group input-group-lg" action="/searchMRN/" method="POST">{% csrf_token %}  
+              <form class="input-group input-group-lg" action="/search/" method="POST">{% csrf_token %}  
                   <input 
                     type="text" 
                     class="form-control input-lg" 
-                    id="inputMRN" 
-                    placeholder="Eneter MRN"
-                    name="mrn_num"
+                    id="person_id" 
+                    placeholder="Enter Patient ID"
+                    name="person_id"
                   >
                   <span class="input-group-btn">
                       <button class="btn btn-default btn-lg" type="submit">Search</button>
@@ -98,7 +98,7 @@
               {% for enc in all_encs %}
                 <tr>
                   <td>
-                    <a href="/enc_detail/{{ enc.person_id }}/{{ enc.visit_occurrence_id }}/">{{ enc.visit_occurrence_id }}</a>  
+                    <a href="/encounter/{{ enc.visit_occurrence_id }}/">{{ enc.visit_occurrence_id }}</a>  
                   </td>
                 </tr>
               {% endfor %}

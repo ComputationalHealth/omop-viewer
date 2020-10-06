@@ -4,28 +4,32 @@ services:
     db:
         image: postgres
         hostname: omop-viewer-db
+        build:
+                context: ./db
+                dockerfile: Dockerfile
         environment:
             - POSTGRES_DB=omop
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
             - POSTGRES_HOST_AUTH_METHOD=trust
-        build:
-                context: .
-                dockerfile: ./db/Dockerfile.db
-        #network_mode: bridge
         networks:
             - djangonetwork
-        command: postgres -c max_wal_size=2GB -c work_mem=50MB -c autovacuum=off     
         expose:
             - "5432"
 
-    app:
-        hostname: omop-viewer-app
+    webapp:
+        hostname: omop-viewer-webapp
         restart: always
         build:
-            context: .
-            dockerfile: ./app/Dockerfile.app
-        #network_mode: bridge
+            context: ./webapp
+            dockerfile: Dockerfile
+        environment:
+            - POSTGRES_HOST=db
+            - POSTGRES_PORT=5432
+            - POSTGRES_DB=omop
+            - POSTGRES_SCHEMA=cdm_synthea10
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
         networks:
             - djangonetwork
         links: 
@@ -34,16 +38,7 @@ services:
             - "5599:8000"
         depends_on:
             - db
-        environment:
-            WAIT_HOSTS: db:5432
-        volumes:
-            - ./app:/app
-        command: >
-            sh -c "python manage.py runserver 0.0.0.0:8000"
 
 networks:
     djangonetwork:
         driver: bridge
-
-
-    

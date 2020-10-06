@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OMOP Patient Viewer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        .main {
+          position: center;
+          text-align: center;
+        }
+        .column1 {
+          position: center;
+          color: #4287f5;
+        }
+        #bottom {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          color: #ffffff;
+          background-color: #4287f5;
+          padding: 15px 0;
+        }
+        
+      </style>
+  </head>
+  <body>
+    <div class="main">
+        <div class="column1">
+          <h1  style="text-align:center">OMOP Patient Viewer</h1>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+              <form class="input-group input-group-lg" action="/searchMRN/" method="POST">{% csrf_token %}  
+                  <input 
+                    type="text" 
+                    class="form-control input-lg" 
+                    id="inputMRN" 
+                    placeholder="Eneter MRN"
+                    name="mrn_num"
+                  >
+                  <span class="input-group-btn">
+                      <button class="btn btn-default btn-lg" type="submit">Search</button>
+                  </span>
+              </form>
+          </div>
+        </div>
+
+        <div overflow:scroll;>
+          <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+              <b>Patient Demographic Information:</b>
+              <table style="width:100%" class=table-bordered>
+                {% for name, value in patient.get_fields %}
+                  {% if value %}
+                    <tr>
+                      <td>{{ name }}</td>
+                      <td>{{ value }}</td>
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+              </table>
+            </div> 
+          </div>  
+
+          
+          <div class="col-md-12 col-md-offset-0">
+            <b>Measurement Information (too many records, needs to split into pages, 20 per page): </b>
+            <table style="width:100%" class=table-bordered>
+              <tr>
+                {% for name, value in measurement_fields %}
+                  {% if value %}
+                      <th>{{ name }}</th>
+                  {% endif %}
+              {% endfor %}
+              </tr>
+              
+              
+              {% for meas in measurements %}
+                <tr>
+                  {% for name, value in meas.get_fields %}
+                    {% if value %}
+                      <td>{{ value }}</td>
+                    {% endif %}
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </table>
+          </div> 
+          
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+            <b>Encouter list:</b>
+            <table style="width:100%" class=table-bordered>
+              {% for enc in all_encs %}
+                <tr>
+                  <td>
+                    <a href="/encounter/{{ enc.visit_occurrence_id }}/">{{ enc.visit_occurrence_id }}</a>  
+                  </td>
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+        
+      <div class="fixed-bottom">Copyright @Guannan Gong 2020. Email: guannan.gong@yale.edu</div>
+      
+    </div>
+  </body>
+</html> 

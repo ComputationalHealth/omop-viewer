@@ -11,7 +11,7 @@ services:
             - POSTGRES_HOST_AUTH_METHOD=trust
         build:
                 context: .
-                dockerfile: ./db/Dockerfile.db
+                dockerfile: ./db/Dockerfile
         #network_mode: bridge
         networks:
             - djangonetwork
@@ -24,7 +24,7 @@ services:
         restart: always
         build:
             context: .
-            dockerfile: ./app/Dockerfile.app
+            dockerfile: ./app/Dockerfile
         #network_mode: bridge
         networks:
             - djangonetwork
